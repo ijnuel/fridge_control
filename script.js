@@ -11,7 +11,6 @@ $(document).ready(function() {
         runChecks();
     }, 5000)
     rootRef.orderByKey().limitToLast(1).on("value", function(snapshot) {
-
         data = snapshot.val().values;
         $('#power_down_time').val(data.power_down_time);
         $('#power_up_time').val(data.power_up_time);
@@ -40,20 +39,15 @@ function updateData() {
     data.power_down_time = $('#power_down_time')[0].value;
     data.power_up_time = $('#power_up_time')[0].value;
     data.secondary_switch = $('#secondary_switch')[0].checked;
-    console.log("updating")
-    console.log(data)
     rootRef.child("values").set(data);
 }
 
 function runChecks() {
     setInterval(function() {
-        console.log("interval")
         let currentValue = data.primary_switch;
         let currentTime = new Date().toTimeString();
-        console.log(currentTime)
         data.primary_switch = currentTime >= data.power_up_time && currentTime <= data.power_down_time;
         if (currentValue !== data.primary_switch) {
-            console.log("interval update")
             updateData();
         }
     }, 10000)
